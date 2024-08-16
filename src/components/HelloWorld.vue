@@ -1,38 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
-defineProps<{ msg: string }>()
-
-const count = ref(0)
+defineProps<{ msg: string }>();
+const startCamera = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+    });
+    const videoElement = document.getElementById("camera-preview");
+    console.log(videoElement);
+    if (videoElement) (videoElement as HTMLVideoElement).srcObject = stream;
+  } catch (error) {
+    console.error("Error accessing camera:", error);
+  }
+};
+startCamera();
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
-  </div>
-
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
-  </p>
-  <p>
-    Install
-    <a href="https://github.com/vuejs/language-tools" target="_blank">Volar</a>
-    in your IDE for a better DX
-  </p>
-  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+  <video class="box" id="camera-preview" autoplay playsinline>
+    Click on the Vite and Vue logos to learn more
+  </video>
 </template>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
+.box {
+  color: #fff;
+  /* background-color: #888; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
